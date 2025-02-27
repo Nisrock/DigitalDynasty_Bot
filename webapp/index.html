@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigitalDynasty</title>
+    <link rel="stylesheet" href="/webapp/styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🏢 DigitalDynasty</h1>
+        <div id="status">Загрузка статуса...</div>
+        <div class="actions">
+            <button id="hire">👥 Нанять сотрудника</button>
+            <button id="project">📈 Взять проект</button>
+            <button id="upgrade">🏢 Улучшить офис</button>
+        </div>
+        <div id="hire-menu" class="hire-menu" style="display: none;">
+            <h2>Выбери роль:</h2>
+            <button class="role-btn" data-role="Developer">👨‍💻 Разработчик</button>
+            <button class="role-btn" data-role="Manager">👩‍💼 Менеджер</button>
+            <button class="role-btn" data-role="Marketer">📢 Маркетолог</button>
+        </div>
+    </div>
+    <script src="/webapp/app.js"></script>
+</body>
+</html>

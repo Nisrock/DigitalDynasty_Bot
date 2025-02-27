@@ -1,0 +1,241 @@
+import telegram
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes, ConversationHandler
+import random
+import json
+import os
+
+# Замени на свой токен от BotFather
+TOKEN = '8191066276:AAFxvTnzxd0gMljXgcxiew1FOiHRvfk0F14'
+
+# Состояния для ConversationHandler (если нужно будет добавлять диалоги)
+CHOOSE_ACTION = 0
+
+# Класс для хранения состояния игрока
+class Player:
+    def __init__(self):
+        self.balance = 10000  # Начальный бюджет
+        self.reputation = 0   # Репутация
+        self.stage = "Courtship"  # Текущий этап по Адизесу
+        self.employees = 1    # Количество сотрудников (игрок сам)
+        self.projects = 0     # Выполненные проекты
+        self.paei = {"P": 50, "A": 10, "E": 70, "I": 30}  # Индикаторы Адизеса
+
+# Словарь для хранения данных игроков
+players = {}
+
+# Файл для сохранения прогресса
+SAVE_FILE = "players.json"
+
+# Загрузка данных из файла
+def load_players():
+    global players
+    if os.path.exists(SAVE_FILE):
+        with open(SAVE_FILE, 'r') as f:
+            loaded = json.load(f)
+            for chat_id, data in loaded.items():
+                player = Player()
+                player.balance = data["balance"]
+                player.reputation = data["reputation"]
+                player.stage = data["stage"]
+                player.employees = data["employees"]
+                player.projects = data["projects"]
+                player.paei = data["paei"]
+                players[int(chat_id)] = player
+
+# Сохранение данных в файл
+def save_players():
+    with open(SAVE_FILE, 'w') as f:
+        json.dump({chat_id: {
+            "balance": p.balance,
+            "reputation": p.reputation,
+            "stage": p.stage,
+            "employees": p.employees,
+            "projects": p.projects,
+            "paei": p.paei
+        } for chat_id, p in players.items()}, f)
+
+# Команда /start
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    user = update.message.from_user.first_name
+    
+    # Создаем нового игрока, если его нет
+    if chat_id not in players:
+        players[chat_id] = Player()
+    
+    player = players[chat_id]
+    welcome_message = (
+        f"Привет, {user}! Добро пожаловать в IT Empire!\n"
+        f"Этап: {player.stage}\n"
+        f"Баланс: {player.balance} монет\n"
+        f"Репутация: {player.reputation}\n"
+        f"Сотрудники: {player.employees}\n"
+        f"PAEI: P:{player.paei['P']} A:{player.paei['A']} E:{player.paei['E']} I:{player.paei['I']}\n"
+        "Что делаешь?\n"
+        "/hire - Нанять сотрудника (3000 монет)\n"
+        "/project - Взять проект\n"
+        "/upgrade - Улучшить офис (5000 монет)\n"
+        "/status - Проверить состояние"
+    )
+    await update.message.reply_text(welcome_message)
+    save_players()
+
+# Команда /status
+async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    if chat_id not in players:
+        await update.message.reply_text("Сначала начни игру с /start!")
+        return
+    
+    player = players[chat_id]
+    status_message = (
+        f"Этап: {player.stage}\n"
+        f"Баланс: {player.balance} монет\n"
+        f"Репутация: {player.reputation}\n"
+        f"Сотрудники: {player.employees}\n"
+        f"Проекты: {player.projects}\n"
+        f"PAEI: P:{player.paei['P']} A:{player.paei['A']} E:{player.paei['E']} I:{player.paei['I']}"
+    )
+    await update.message.reply_text(status_message)
+
+# Команда /hire
+async def hire(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    if chat_id not in players:
+        await update.message.reply_text("Сначала начни игру с /start!")
+        return
+    
+    player = players[chat_id]
+    if player.balance >= 3000:
+        player.balance -= 3000
+        player.employees += 1
+        player.paei["I"] += 5  # Улучшает интеграцию
+        await update.message.reply_text(
+            f"Нанят новый сотрудник! Теперь у тебя {player.employees} сотрудников.\n"
+            f"Баланс: {player.balance} монет.\nPAEI обновлено."
+        )
+        random_event(chat_id, update)
+    else:
+        await update.message.reply_text("Недостаточно монет для найма!")
+    save_players()
+
+# Команда /project
+async def project(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    if chat_id not in players:
+        await update.message.reply_text("Сначала начни игру с /start!")
+        return
+    
+    player = players[chat_id]
+    if player.employees > player.projects:  # Проверка на свободных сотрудников
+        player.projects += 1
+        reward = random.randint(4000, 6000)
+        player.balance += reward
+        player.reputation += random.randint(5, 10)
+        player.paei["P"] += 5  # Увеличивает производительность
+        await update.message.reply_text(
+            f"Проект выполнен! Ты заработал {reward} монет и +{player.reputation - (player.reputation - 5)} репутации.\n"
+            f"Баланс: {player.balance}\nРепутация: {player.reputation}"
+        )
+        check_stage(player, update)
+        random_event(chat_id, update)
+    else:
+        await update.message.reply_text("Нужно больше сотрудников для новых проектов!")
+    save_players()
+
+# Команда /upgrade
+async def upgrade(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.message.chat_id
+    if chat_id not in players:
+        await update.message.reply_text("Сначала начни игру с /start!")
+        return
+    
+    player = players[chat_id]
+    if player.balance >= 5000:
+        player.balance -= 5000
+        player.paei["A"] += 10  # Улучшает администрирование
+        await update.message.reply_text(
+            f"Офис улучшен! Продуктивность и порядок растут.\n"
+            f"Баланс: {player.balance} монет.\nPAEI обновлено."
+        )
+        random_event(chat_id, update)
+    else:
+        await update.message.reply_text("Недостаточно монет для улучшения!")
+    save_players()
+
+# Проверка этапа по Адизесу
+def check_stage(player, update):
+    if player.stage == "Courtship" and player.reputation >= 10:
+        player.stage = "Infancy"
+        update.message.reply_text(
+            "Поздравляем! Ты перешёл в этап 'Младенчество'. Теперь главное — выжить!"
+        )
+    elif player.stage == "Infancy" and player.reputation >= 30 and player.employees >= 3:
+        player.stage = "Go-Go"
+        update.message.reply_text(
+            "Ты в этапе 'Давай-давай'! Компания растёт, но хаос нарастает."
+        )
+    elif player.stage == "Go-Go" and player.reputation >= 60 and player.paei["A"] >= 30:
+        player.stage = "Adolescence"
+        update.message.reply_text(
+            "Добро пожаловать в 'Юность'! Пора наводить порядок и решать конфликты."
+        )
+    elif player.stage == "Adolescence" and player.reputation >= 100 and player.paei["P"] >= 70 and player.paei["I"] >= 50:
+        player.stage = "Prime"
+        update.message.reply_text(
+            "Ты достиг 'Расцвета'! Компания на пике успеха."
+        )
+    elif player.stage == "Prime" and player.paei["E"] < 40:
+        player.stage = "Stable"
+        update.message.reply_text(
+            "Переход в 'Стабильность'. Рост замедлился, пора искать новые идеи."
+        )
+    elif player.stage == "Stable" and player.paei["A"] > 80 and player.paei["E"] < 20:
+        player.stage = "Aristocracy"
+        update.message.reply_text(
+            "Ты в 'Аристократизме'. Бюрократия душит инновации."
+        )
+    elif player.stage == "Aristocracy" and player.balance < 0:
+        player.stage = "Bureaucracy"
+        update.message.reply_text(
+            "Компания в 'Бюрократии'. Это конец пути, если не реанимировать бизнес!"
+        )
+
+# Случайные события
+def random_event(chat_id, update):
+    player = players[chat_id]
+    if random.random() < 0.3:  # 30% шанс события
+        event = random.choice([
+            ("Клиент недоволен багом. Исправить за 2000 монет или потерять 10 репутации?", 
+             lambda p: p.balance >= 2000 and (p.balance := p.balance - 2000) or (p.reputation := p.reputation - 10)),
+            ("Сотрудник хочет повышения. Дать +1000 к зарплате или рискнуть его уходом?", 
+             lambda p: p.balance >= 1000 and (p.balance := p.balance - 1000, p.paei["I"] := p.paei["I"] + 5) or (p.employees := p.employees - 1 if p.employees > 1 else p.employees)),
+            ("Конкурент переманил клиента. Вложить 3000 в маркетинг или потерять проект?", 
+             lambda p: p.balance >= 3000 and (p.balance := p.balance - 3000, p.reputation := p.reputation + 5) or (p.reputation := p.reputation - 5))
+        ])
+        action = event[1]
+        update.message.reply_text(event[0])
+        action(player)  # Применяем эффект события
+        update.message.reply_text(f"Новое состояние: Баланс: {player.balance}, Репутация: {player.reputation}")
+
+def main():
+    # Загружаем сохранённых игроков
+    load_players()
+
+    # Создаем приложение
+    application = Application.builder().token(TOKEN).build()
+
+    # Регистрируем команды
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("hire", hire))
+    application.add_handler(CommandHandler("project", project))
+    application.add_handler(CommandHandler("upgrade", upgrade))
+    application.add_handler(CommandHandler("status", status))
+
+    # Запускаем бота
+    print("Бот запущен!")
+    application.run_polling()
+
+if __name__ == '__main__':
+    main()
