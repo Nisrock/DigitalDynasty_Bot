@@ -31,6 +31,8 @@
     <Folder Include="webapp\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Procfile" />
+    <Content Include="requirements.txt" />
     <Content Include="webapp\app.js" />
     <Content Include="webapp\index.html" />
     <Content Include="webapp\styles.css" />
