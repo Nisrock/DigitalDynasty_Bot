@@ -75,7 +75,7 @@ function updateStatus() {
     .then(data => {
         stage.textContent = data.stage;
         reputation.textContent = `Репутация: ${data.reputation}`;
-        employees.textContent = `Сотрудники: ${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет сотрудников"})`;
+        employees.textContent = `Сотрудники: ${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет"})`;
         projects.textContent = `Проекты: ${data.projects}`;
         paeiP.textContent = `P: ${data.paei.P}%`;
         paeiA.textContent = `A: ${data.paei.A}%`;
