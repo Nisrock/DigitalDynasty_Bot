@@ -5,7 +5,9 @@ import os
 
 app = Flask(__name__, static_folder='../webapp', static_url_path='/webapp')
 game_instance = Game()
-game_instance.load_players()
+
+# Убираем load_players() для Serverless, данные будут создаваться заново для каждого пользователя
+# game_instance.load_players() # Закомментировано
 
 @app.after_request
 def add_cors_headers(response):
@@ -44,7 +46,8 @@ def handle_command():
         else:
             return jsonify({"error": f"Unknown command: {command}"}), 400
         
-        game_instance.save_players()
+        # Убираем save_players(), данные хранятся в памяти
+        # game_instance.save_players()
         return jsonify({"success": success, "message": message})
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
