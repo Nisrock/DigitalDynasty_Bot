@@ -19,16 +19,19 @@ h1, h2 {
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.notification {
-    background-color: #e0ffe0;
+.message-box {
+    background-color: #e0ffe0; /* Зелёный фон по умолчанию */
     color: #333;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
-    display: none;
+    min-height: 20px; /* Фиксированная высота для стабильности */
+}
+.message-box.error {
+    background-color: #ffe0e0; /* Красный фон для ошибок */
 }
 .event-container {
-    background-color: #fff3e0; /* Оранжевый фон для событий */
+    background-color: #fff3e0;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;

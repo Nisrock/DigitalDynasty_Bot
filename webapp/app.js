@@ -4,6 +4,10 @@ tg.ready();
 const user = tg.initDataUnsafe.user;
 const chat_id = user ? user.id : null;
 
+if (!chat_id) {
+    document.getElementById('status').innerHTML = "Ошибка: Не удалось определить chat_id";
+}
+
 function sendCommand(command, role = null, action = null) {
     if (!chat_id) {
         showNotification("Ошибка: Не удалось определить chat_id", true);
@@ -71,7 +75,7 @@ function updateStatus() {
             <p>⚙️ P: ${data.paei.P}% | 📋 A: ${data.paei.A}%</p>
             <p>💡 E: ${data.paei.E}% | 🤝 I: ${data.paei.I}%</p>
         `;
-        hideEvent(); // Скрываем событие после обновления
+        hideEvent();
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
@@ -79,21 +83,17 @@ function updateStatus() {
 }
 
 function showNotification(message, isError = false) {
-    const notification = document.getElementById('notification');
-    if (!notification) return; // Проверка на наличие элемента
-    notification.textContent = message;
-    notification.style.display = 'block';
-    notification.style.backgroundColor = isError ? '#ffe0e0' : '#e0ffe0';
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 3000);
+    const messageBox = document.getElementById('message');
+    if (!messageBox) return;
+    messageBox.textContent = message;
+    messageBox.className = 'message-box' + (isError ? ' error' : ''); // Устанавливаем класс
 }
 
 function showEvent(event) {
     const eventContainer = document.getElementById('event');
     const eventMessage = document.getElementById('event-message');
     const eventOptions = document.getElementById('event-options');
-    if (!eventContainer || !eventMessage || !eventOptions) return; // Проверка на наличие элементов
+    if (!eventContainer || !eventMessage || !eventOptions) return;
     
     eventMessage.textContent = event.message;
     eventOptions.innerHTML = '';
