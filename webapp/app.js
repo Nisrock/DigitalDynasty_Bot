@@ -69,8 +69,7 @@ function updateStatus() {
         document.getElementById('projects').textContent = data.projects;
         document.getElementById('paei-p').textContent = `${data.paei.P}%`;
         document.getElementById('paei-a').textContent = `${data.paei.A}%`;
-        document.getElementById('paei-e').textContent = `${data.paei.E}%`;
-        document.getElementById('paei-i').textContent = `${data.paei.I}%`;
+        document.getElementById('paei-ei').textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;

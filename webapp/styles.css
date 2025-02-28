@@ -11,9 +11,9 @@ body {
     text-align: center;
 }
 h1 {
-    color: #00ADB5; /* Неоновый голубой */
+    color: #00FF00; /* Неоновый зелёный */
     font-size: 20px;
-    text-shadow: 0 0 5px #00ADB5;
+    text-shadow: 0 0 10px #00FF00;
 }
 .status-grid {
     display: grid;
@@ -24,18 +24,19 @@ h1 {
 .status-card {
     background-color: #1B263B; /* Тёмно-синий блок */
     padding: 10px;
-    border: 2px solid #415A77; /* Светло-синяя рамка */
-    border-radius: 5px;
+    border: 3px solid #00FF00; /* Неоновая зелёная рамка */
+    border-radius: 8px;
     font-size: 12px;
-    color: #E0E0E0;
+    color: #FFD700; /* Жёлтый текст для значений */
     text-align: left;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Неоновый контур */
 }
 .status-card span:first-child {
-    color: #00ADB5; /* Неоновая иконка */
+    color: #00FF00; /* Неоновая иконка */
+    margin-right: 5px;
 }
 .status-card span:last-child {
     margin-left: 5px;
-    color: #FFD700; /* Жёлтый для значений */
 }
 .message-box {
     background-color: #1B263B;
@@ -46,14 +47,17 @@ h1 {
     margin-bottom: 15px;
     min-height: 40px;
     font-size: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 .message-box.error {
     color: #FF0000; /* Неоновый красный */
     border-color: #FF0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 .message-box.event {
     color: #FFFF00; /* Неоновый жёлтый */
     border-color: #FFFF00;
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
 }
 .message-box button {
     background-color: #00FF00;
@@ -89,7 +93,7 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 12px;
-    box-shadow: 0 0 10px rgba(0, 173, 181, 0.5); /* Неоновый контур */
+    box-shadow: 0 0 10px rgba(0, 173, 181, 0.5);
 }
 .actions button:hover {
     background-color: #2E4A6A;
