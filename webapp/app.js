@@ -80,7 +80,7 @@ function updateStatus() {
         paeiP.textContent = `P: ${data.paei.P}%`;
         paeiA.textContent = `A: ${data.paei.A}%`;
         paeiEI.textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
-        balanceDisplay.textContent = `⏰ ${new Date().toLocaleTimeString()} $${data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false })}`;
+        balanceDisplay.textContent = `$${data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false })}`;
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
