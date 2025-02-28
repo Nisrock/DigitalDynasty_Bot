@@ -85,7 +85,7 @@ function showMessage(message, isError = false, options = null) {
     const messageBox = document.getElementById('message');
     if (!messageBox) return;
     
-    messageBox.innerHTML = message; // Используем innerHTML для поддержки кнопок
+    messageBox.innerHTML = message;
     messageBox.className = 'message-box' + (isError ? ' error' : options ? ' event' : '');
     
     if (options) {
@@ -113,6 +113,7 @@ document.getElementById('hire').addEventListener('click', () => {
 
 document.getElementById('project').addEventListener('click', () => sendCommand('project'));
 document.getElementById('upgrade').addEventListener('click', () => sendCommand('upgrade'));
+document.getElementById('small_project').addEventListener('click', () => sendCommand('small_project'));
 
 document.querySelectorAll('.role-btn').forEach(button => {
     button.addEventListener('click', () => {

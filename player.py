@@ -20,7 +20,7 @@ class Player:
             self.employee_roles[role] = self.employee_roles.get(role, 0) + 1
             for key, value in role_data["paei"].items():
                 self.paei[key] += value
-            return True, f"👨‍💻 Нанят {role}!\nСотрудники: {self.employees}\nБаланс: {self.balance} монет"
+            return True, f"👨‍💻 Нанят {role}!\nСотрудники: {self.employees}\nБаланс: {self.balance}"
         return False, f"💸 Недостаточно монет для найма {role} ({role_data['cost']} монет)!"
 
     def take_project(self):
@@ -46,7 +46,7 @@ class Player:
         if self.balance >= UPGRADE_COST:
             self.balance -= UPGRADE_COST
             self.paei["A"] += UPGRADE_PAEI_A
-            return True, f"🏢 Офис улучшен!\nБаланс: {self.balance} монет"
+            return True, f"🏢 Офис улучшен!\nБаланс: {self.balance}"
         return False, "💸 Недостаточно монет для улучшения!"
 
     def to_dict(self):
@@ -69,5 +69,5 @@ class Player:
         player.employees = data["employees"]
         player.projects = data["projects"]
         player.paei = data["paei"]
-        player.employee_roles = data.get("employee_roles", {"Developer": 1, "Manager": 0, "Marketer": 0})
+        player.employee_roles = data["employee_roles"]
         return player

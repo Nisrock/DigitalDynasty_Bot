@@ -34,7 +34,7 @@ def handle_command():
         command = data['command']
         chat_id = data['chat_id']
         role = data.get('role')
-        action = data.get('action')  # Для выбора действия в событиях
+        action = data.get('action')
         
         player = game_instance.get_player(chat_id)
         if command == 'hire' and role in EMPLOYEE_ROLES:
@@ -51,6 +51,12 @@ def handle_command():
                     return jsonify({"success": success, "message": message, "event": event})
         elif command == 'upgrade':
             success, message = player.upgrade_office()
+            if success:
+                event = trigger_random_event(chat_id)
+                if event:
+                    return jsonify({"success": success, "message": message, "event": event})
+        elif command == 'small_project':
+            success, message = player.take_small_project()
             if success:
                 event = trigger_random_event(chat_id)
                 if event:
@@ -89,10 +95,9 @@ def get_status():
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
-# Функция для генерации случайных событий
 def trigger_random_event(chat_id):
     player = game_instance.get_player(chat_id)
-    if random.random() < 0.3:  # 30% шанс события
+    if random.random() < 0.3:  # 30% шанс
         event = random.choice([
             {
                 "message": "Клиент недоволен багом в проекте! Что делать?",
@@ -112,7 +117,6 @@ def trigger_random_event(chat_id):
         return event
     return None
 
-# Обработка выбора действия в событии
 def handle_event(chat_id, action):
     player = game_instance.get_player(chat_id)
     if action == 'fix_bug':
@@ -126,7 +130,7 @@ def handle_event(chat_id, action):
     elif action == 'bonus':
         if player.balance >= BONUS_COST:
             player.balance -= BONUS_COST
-            player.paei["I"] += 5  # Бонус к командному духу
+            player.paei["I"] += 5
             return True, f"💸 Сотрудник остался! Баланс: {player.balance}"
         return False, "💸 Недостаточно монет для бонуса!"
     elif action == 'let_go':
