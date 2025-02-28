@@ -6,12 +6,12 @@ const chat_id = user ? user.id : null;
 
 if (!chat_id) {
     const statusElement = document.getElementById('status');
-    if (statusElement) statusElement.innerHTML = "Ошибка: Не удалось определить chat_id";
+    if (statusElement) statusElement.innerHTML = 'Ошибка: Не удалось определить chat_id';
 }
 
 function sendCommand(command, role = null, action = null) {
     if (!chat_id) {
-        showMessage("Ошибка: Не удалось определить chat_id", true);
+        showMessage('Ошибка: Не удалось определить chat_id', true);
         return;
     }
     const body = { command: command, chat_id: chat_id };
@@ -34,14 +34,14 @@ function sendCommand(command, role = null, action = null) {
             if (data.event) {
                 showMessage(data.event.message, false, data.event.options);
             } else {
-                showMessage(data.message || "Действие выполнено");
+                showMessage(data.message || 'Действие выполнено');
             }
         } else {
-            showMessage(data.message || "Ошибка выполнения команды", true);
+            showMessage(data.message || 'Ошибка выполнения команды', true);
         }
     })
     .catch(error => {
-        showMessage("Ошибка связи с сервером: " + error.message, true);
+        showMessage('Ошибка связи с сервером: ' + error.message, true);
     });
 }
 
@@ -57,7 +57,7 @@ function updateStatus() {
     const paeiEI = document.getElementById('paei-ei');
 
     if (!chat_id || !statusElement || !balanceDisplay || !stage || !reputation || !employees || !projects || !paeiP || !paeiA || !paeiEI) {
-        if (statusElement) statusElement.innerHTML = "Ошибка: Не удалось загрузить статус";
+        if (statusElement) statusElement.innerHTML = 'Ошибка: Не удалось загрузить статус';
         return;
     }
 
@@ -75,7 +75,7 @@ function updateStatus() {
     .then(data => {
         stage.textContent = data.stage;
         reputation.textContent = `Репутация: ${data.reputation}`;
-        employees.textContent = `Сотрудники: ${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет"})`;
+        employees.textContent = `Сотрудники: ${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || 'Нет'})`;
         projects.textContent = `Проекты: ${data.projects}`;
         paeiP.textContent = `P: ${data.paei.P}%`;
         paeiA.textContent = `A: ${data.paei.A}%`;
@@ -83,7 +83,7 @@ function updateStatus() {
         balanceDisplay.textContent = `$${data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false })}`;
     })
     .catch(error => {
-        statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
+        statusElement.innerHTML = 'Ошибка загрузки статуса: ' + error.message;
     });
 }
 

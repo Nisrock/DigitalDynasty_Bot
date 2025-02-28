@@ -1,6 +1,6 @@
-body {
+п»їbody {
     font-family: 'Press Start 2P', cursive;
-    background-color: #0A0F14; /* Очень тёмный фон */
+    background-color: #0A0F14;
     margin: 0;
     padding: 20px 20px 100px 20px;
     color: #E0E0E0;
@@ -11,13 +11,13 @@ body {
     text-align: center;
 }
 h1 {
-    color: #00FF00; /* Неоновый зелёный */
+    color: #00FF00;
     font-size: 20px;
     text-shadow: 0 0 10px #00FF00;
 }
 .balance-display {
-    background: linear-gradient(45deg, #00FF00, #00CC00); /* Неоновый градиент */
-    color: #000000; /* Чёрный текст */
+    background: linear-gradient(45deg, #00FF00, #00CC00);
+    color: #000000;
     padding: 12px;
     border: 3px solid #00FF00;
     border-radius: 8px;
@@ -34,20 +34,20 @@ h1 {
     margin-bottom: 20px;
 }
 .status-card {
-    background: linear-gradient(135deg, #1B263B, #0F1A2A); /* Градиент для глубины */
+    background: linear-gradient(135deg, #1B263B, #0F1A2A);
     padding: 12px;
     border: 3px solid #00FF00;
     border-radius: 8px;
     font-size: 14px;
-    color: #FFD700; /* Жёлтый текст */
+    color: #FFD700;
     text-align: left;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
     display: flex;
     align-items: center;
-    min-height: 50px; /* Фиксированная высота */
+    min-height: 50px;
 }
 .animated-icon {
-    animation: pulse 1.5s infinite; /* Анимация пульсации */
+    animation: pulse 1.5s infinite;
 }
 @keyframes pulse {
     0% { transform: scale(1); }
@@ -55,7 +55,7 @@ h1 {
     100% { transform: scale(1); }
 }
 .status-card span:first-child {
-    color: #00FF00; /* Неоновая иконка */
+    color: #00FF00;
     margin-right: 10px;
     font-size: 18px;
 }
@@ -122,7 +122,7 @@ h1 {
     font-size: 14px;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
     text-transform: uppercase;
-    width: 120px; /* Фиксированная ширина */
+    width: 120px;
 }
 .actions button:hover {
     background-color: #14375A;
@@ -156,7 +156,7 @@ h1 {
     cursor: pointer;
     font-size: 14px;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-    width: 140px; /* Фиксированная ширина */
+    width: 140px;
 }
 .hire-menu button:hover {
     background-color: #14375A;
