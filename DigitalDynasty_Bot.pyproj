@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>5c39d136-8980-4b18-ba38-81dc54eea28f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,18 +22,20 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="api\index.py" />
     <Compile Include="bot.py" />
     <Compile Include="config.py" />
     <Compile Include="game.py" />
-    <Compile Include="main.py" />
     <Compile Include="player.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="api\" />
     <Folder Include="webapp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Procfile" />
     <Content Include="requirements.txt" />
+    <Content Include="vercel.json" />
     <Content Include="webapp\app.js" />
     <Content Include="webapp\index.html" />
     <Content Include="webapp\styles.css" />
