@@ -1,49 +1,57 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Press Start 2P', cursive;
+    background-color: #F5F5F5; /* Светлый фон из варианта 1 */
     margin: 0;
-    padding: 20px 20px 100px 20px; /* Отступ снизу для кнопок */
+    padding: 20px 20px 100px 20px;
 }
 .container {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
 }
-h1, h2 {
-    color: #333;
+h1 {
+    color: #333; /* Тёмный текст из варианта 1 */
+    font-size: 20px;
 }
 #status {
-    background-color: #fff;
+    background-color: #FFFFFF; /* Белый блок из варианта 1 */
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.1); /* Неоморфизм из варианта 2 */
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
+    color: #B0BEC5; /* Серый текст из варианта 2 */
+    font-size: 12px; /* Уменьшенный размер для пиксельного шрифта */
 }
 .message-box {
-    background-color: #e0ffe0; /* Зелёный по умолчанию */
-    color: #333;
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный неоморфный стиль из варианта 2 */
+    color: #FF9800; /* Оранжевый текст из варианта 2 */
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
-    min-height: 40px; /* Увеличенная высота для событий */
+    min-height: 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 10px;
 }
 .message-box.error {
-    background-color: #ffe0e0; /* Красный для ошибок */
+    color: #EF5350; /* Красный для ошибок из варианта 2 */
 }
 .message-box.event {
-    background-color: #fff3e0; /* Оранжевый для событий */
+    color: #FFB300; /* Жёлтый для событий из варианта 2 */
 }
 .message-box button {
-    background-color: #ff9800;
+    background-color: #FF9800;
     color: white;
     border: none;
     padding: 8px 16px;
     margin: 5px;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
 }
 .message-box button:hover {
-    background-color: #e68900;
+    background-color: #E68900;
 }
 .actions {
     position: fixed;
@@ -59,40 +67,48 @@ h1, h2 {
     box-sizing: border-box;
 }
 .actions button {
-    background-color: #0088cc;
+    background-color: #263544; /* Тёмный неоморфный фон из варианта 2 */
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 12px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.2), -4px -4px 8px rgba(255,255,255,0.05); /* Неоморфизм */
 }
 .actions button:hover {
-    background-color: #006699;
+    background-color: #2E4057;
 }
 .hire-menu {
     position: fixed;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #fff;
+    background-color: #F5F5F5; /* Светлый фон из варианта 1 */
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Неоморфизм из варианта 2 */
     width: 100%;
     max-width: 600px;
     box-sizing: border-box;
+    display: none;
+}
+.hire-menu h2 {
+    color: #333;
+    font-size: 14px;
 }
 .hire-menu button {
-    background-color: #0088cc;
+    background-color: #263544;
     color: white;
     border: none;
     padding: 10px 20px;
     margin: 5px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 12px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.2), -4px -4px 8px rgba(255,255,255,0.05);
 }
 .hire-menu button:hover {
-    background-color: #006699;
+    background-color: #2E4057;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
 }
