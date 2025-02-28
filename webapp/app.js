@@ -8,10 +8,11 @@ if (!chat_id) {
     document.getElementById('status').innerHTML = "Ошибка: Не удалось определить chat_id";
 }
 
-function sendCommand(command, role = null) {
+function sendCommand(command, role = null, action = null) {
     if (chat_id) {
         const body = { command: command, chat_id: chat_id };
         if (role) body.role = role;
+        if (action) body.action = action;
         fetch('/api/command', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -26,9 +27,13 @@ function sendCommand(command, role = null) {
         .then(data => {
             if (data.success) {
                 updateStatus();
-                showNotification(data.message || "Действие выполнено"); // Показываем сообщение в интерфейсе
+                if (data.event) {
+                    showEvent(data.event); // Показываем событие с кнопками
+                } else {
+                    showNotification(data.message || "Действие выполнено");
+                }
             } else {
-                showNotification(data.message || "Ошибка выполнения команды", true); // Красный фон для ошибок
+                showNotification(data.message || "Ошибка выполнения команды", true);
             }
         })
         .catch(error => {
@@ -64,6 +69,7 @@ function updateStatus() {
                 <p>⚙️ P: ${data.paei.P}% | 📋 A: ${data.paei.A}%</p>
                 <p>💡 E: ${data.paei.E}% | 🤝 I: ${data.paei.I}%</p>
             `;
+            hideEvent(); // Скрываем событие после обновления статуса
         })
         .catch(error => {
             document.getElementById('status').innerHTML = "Ошибка загрузки статуса: " + error.message;
@@ -75,10 +81,34 @@ function showNotification(message, isError = false) {
     const notification = document.getElementById('notification');
     notification.textContent = message;
     notification.style.display = 'block';
-    notification.style.backgroundColor = isError ? '#ffe0e0' : '#e0ffe0'; // Красный для ошибок, зелёный для успеха
+    notification.style.backgroundColor = isError ? '#ffe0e0' : '#e0ffe0';
     setTimeout(() => {
         notification.style.display = 'none';
-    }, 3000); // Скрываем через 3 секунды
+    }, 3000);
+}
+
+function showEvent(event) {
+    const eventContainer = document.getElementById('event');
+    const eventMessage = document.getElementById('event-message');
+    const eventOptions = document.getElementById('event-options');
+    
+    eventMessage.textContent = event.message;
+    eventOptions.innerHTML = '';
+    event.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option.text;
+        button.addEventListener('click', () => {
+            sendCommand('event', null, option.action);
+        });
+        eventOptions.appendChild(button);
+    });
+    
+    eventContainer.style.display = 'block';
+}
+
+function hideEvent() {
+    const eventContainer = document.getElementById('event');
+    eventContainer.style.display = 'none';
 }
 
 document.getElementById('hire').addEventListener('click', () => {
