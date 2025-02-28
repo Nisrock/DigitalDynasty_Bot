@@ -11,7 +11,16 @@
 <body>
     <div class="container">
         <h1>🏢 DigitalDynasty</h1>
-        <div id="status">Загрузка статуса...</div>
+        <div id="status" class="status-grid">
+            <div class="status-card">📍 <span>Этап:</span> <span id="stage">Загрузка...</span></div>
+            <div class="status-card">💰 <span>Баланс:</span> <span id="balance">0</span></div>
+            <div class="status-card">⭐ <span>Репутация:</span> <span id="reputation">0</span></div>
+            <div class="status-card">👥 <span>Сотрудники:</span> <span id="employees">0</span></div>
+            <div class="status-card">📈 <span>Проекты:</span> <span id="projects">0</span></div>
+            <div class="status-card">⚙️ <span>P:</span> <span id="paei-p">0%</span></div>
+            <div class="status-card">📋 <span>A:</span> <span id="paei-a">0%</span></div>
+            <div class="status-card">💡 <span>E:</span> <span id="paei-e">0%</span> | 🤝 <span>I:</span> <span id="paei-i">0%</span></div>
+        </div>
         <div id="message" class="message-box"></div>
         <div class="actions">
             <button id="hire">👥 Нанять сотрудника</button>
@@ -20,7 +29,7 @@
             <button id="small_project">🔧 Мелкий проект</button>
         </div>
         <div id="hire-menu" class="hire-menu" style="display: none;">
-            <h2>Выбери роль:</h2>
+            <h2>Выбери роль!</h2>
             <button class="role-btn" data-role="Developer">👨‍💻 Разработчик</button>
             <button class="role-btn" data-role="Manager">👩‍💼 Менеджер</button>
             <button class="role-btn" data-role="Marketer">📢 Маркетолог</button>

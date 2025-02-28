@@ -62,19 +62,15 @@ function updateStatus() {
         return response.json();
     })
     .then(data => {
-        const rolesText = Object.entries(data.employee_roles)
-            .map(([role, count]) => count > 0 ? `${role}: ${count}` : '')
-            .filter(Boolean)
-            .join(', ') || "Нет сотрудников";
-        statusElement.innerHTML = `
-            <p>📍 Этап: ${data.stage}</p>
-            <p>💰 Баланс: ${data.balance}</p>
-            <p>⭐ Репутация: ${data.reputation}</p>
-            <p>👥 Сотрудники: ${data.employees} (${rolesText})</p>
-            <p>📈 Проекты: ${data.projects}</p>
-            <p>⚙️ P: ${data.paei.P}% | 📋 A: ${data.paei.A}%</p>
-            <p>💡 E: ${data.paei.E}% | 🤝 I: ${data.paei.I}%</p>
-        `;
+        document.getElementById('stage').textContent = data.stage;
+        document.getElementById('balance').textContent = data.balance;
+        document.getElementById('reputation').textContent = data.reputation;
+        document.getElementById('employees').textContent = `${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет сотрудников"})`;
+        document.getElementById('projects').textContent = data.projects;
+        document.getElementById('paei-p').textContent = `${data.paei.P}%`;
+        document.getElementById('paei-a').textContent = `${data.paei.A}%`;
+        document.getElementById('paei-e').textContent = `${data.paei.E}%`;
+        document.getElementById('paei-i').textContent = `${data.paei.I}%`;
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
@@ -92,12 +88,14 @@ function showMessage(message, isError = false, options = null) {
         const optionsDiv = document.createElement('div');
         options.forEach(option => {
             const button = document.createElement('button');
-            button.textContent = option.text;
+            button.innerHTML = `${option.text.split(' ')[0]} <span>${option.text.split(' ').slice(1).join(' ')}</span>`;
             button.addEventListener('click', () => {
                 sendCommand('event', null, option.action);
             });
             optionsDiv.appendChild(button);
         });
+        messageBox.innerHTML = ''; // Очищаем перед добавлением
+        messageBox.appendChild(document.createTextNode(message));
         messageBox.appendChild(optionsDiv);
     }
 }
@@ -123,7 +121,7 @@ document.querySelectorAll('.role-btn').forEach(button => {
         const actions = document.querySelector('.actions');
         if (hireMenu && actions) {
             hireMenu.style.display = 'none';
-            actions.style.display = 'block';
+            actions.style.display = 'flex';
         }
     });
 });
