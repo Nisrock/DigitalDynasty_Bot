@@ -26,13 +26,13 @@ function sendCommand(command, role = null) {
         .then(data => {
             if (data.success) {
                 updateStatus();
-                alert(data.message);
+                showNotification(data.message || "Действие выполнено"); // Показываем сообщение в интерфейсе
             } else {
-                alert(data.message || "Ошибка выполнения команды");
+                showNotification(data.message || "Ошибка выполнения команды", true); // Красный фон для ошибок
             }
         })
         .catch(error => {
-            alert("Ошибка связи с сервером: " + error.message);
+            showNotification("Ошибка связи с сервером: " + error.message, true);
         });
     }
 }
@@ -69,6 +69,16 @@ function updateStatus() {
             document.getElementById('status').innerHTML = "Ошибка загрузки статуса: " + error.message;
         });
     }
+}
+
+function showNotification(message, isError = false) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+    notification.style.backgroundColor = isError ? '#ffe0e0' : '#e0ffe0'; // Красный для ошибок, зелёный для успеха
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000); // Скрываем через 3 секунды
 }
 
 document.getElementById('hire').addEventListener('click', () => {
