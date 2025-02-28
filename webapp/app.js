@@ -64,14 +64,14 @@ function updateStatus() {
     })
     .then(data => {
         document.getElementById('stage').textContent = data.stage;
-        document.getElementById('balance').textContent = data.balance;
+        document.getElementById('balance').textContent = data.balance; // Для сетки
+        balanceDisplay.textContent = `⏰ ${new Date().toLocaleTimeString()} $${data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false })}`;
         document.getElementById('reputation').textContent = data.reputation;
         document.getElementById('employees').textContent = `${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет сотрудников"})`;
         document.getElementById('projects').textContent = data.projects;
         document.getElementById('paei-p').textContent = `${data.paei.P}%`;
         document.getElementById('paei-a').textContent = `${data.paei.A}%`;
         document.getElementById('paei-ei').textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
-        balanceDisplay.textContent = `⏰ ${new Date().toLocaleTimeString()} $` + data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false });
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;

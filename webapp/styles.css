@@ -1,6 +1,6 @@
 body {
     font-family: 'Press Start 2P', cursive;
-    background-color: #0D1B2A; /* Тёмный фон */
+    background-color: #0A0F14; /* Очень тёмный фон */
     margin: 0;
     padding: 20px 20px 100px 20px;
     color: #E0E0E0;
@@ -16,7 +16,7 @@ h1 {
     text-shadow: 0 0 10px #00FF00;
 }
 .balance-display {
-    background-color: #00FF00; /* Неоновый зелёный */
+    background-color: #00FF00; /* Неоновый зелёный дисплей */
     color: #000000; /* Чёрный текст */
     padding: 10px;
     border: 3px solid #00FF00;
@@ -34,24 +34,27 @@ h1 {
     margin-bottom: 20px;
 }
 .status-card {
-    background-color: #1B263B; /* Тёмно-синий блок */
+    background-color: #0F1A2A; /* Тёмно-синий блок */
     padding: 10px;
     border: 2px solid #00FF00; /* Неоновая зелёная рамка */
     border-radius: 8px;
     font-size: 12px;
     color: #FFD700; /* Жёлтый текст для значений */
     text-align: left;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Неоновый контур */
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+    display: flex;
+    align-items: center;
 }
 .status-card span:first-child {
     color: #00FF00; /* Неоновая иконка */
-    margin-right: 5px;
+    margin-right: 8px;
+    font-size: 16px;
 }
 .status-card span:last-child {
-    margin-left: 5px;
+    margin-left: 8px;
 }
 .message-box {
-    background-color: #1B263B;
+    background-color: #0F1A2A;
     color: #00FF00; /* Неоновый зелёный */
     padding: 10px;
     border: 2px solid #00FF00;
@@ -59,21 +62,21 @@ h1 {
     margin-bottom: 15px;
     min-height: 40px;
     font-size: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
 }
 .message-box.error {
     color: #FF0000; /* Неоновый красный */
     border-color: #FF0000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
 }
 .message-box.event {
     color: #FFFF00; /* Неоновый жёлтый */
     border-color: #FFFF00;
-    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
 }
 .message-box button {
     background-color: #00FF00;
-    color: #1B263B;
+    color: #0F1A2A;
     border: none;
     padding: 8px 16px;
     margin: 5px;
@@ -98,27 +101,28 @@ h1 {
     box-sizing: border-box;
 }
 .actions button {
-    background-color: #415A77; /* Тёмно-синий */
-    color: #FFFFFF;
-    border: none;
+    background-color: #1E3A5F; /* Тёмно-синий */
+    color: #00FF00; /* Неоновый зелёный текст */
+    border: 2px solid #00FF00;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 12px;
-    box-shadow: 0 0 10px rgba(0, 173, 181, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    text-transform: uppercase;
 }
 .actions button:hover {
-    background-color: #2E4A6A;
-    box-shadow: 0 0 15px rgba(0, 173, 181, 0.7);
+    background-color: #14375A;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
 .hire-menu {
     position: fixed;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #1B263B;
+    background-color: #0F1A2A;
     padding: 10px;
-    border: 2px solid #00ADB5;
+    border: 2px solid #00FF00;
     border-radius: 8px;
     width: 100%;
     max-width: 600px;
@@ -126,21 +130,21 @@ h1 {
     display: none;
 }
 .hire-menu h2 {
-    color: #00ADB5;
+    color: #00FF00;
     font-size: 14px;
 }
 .hire-menu button {
-    background-color: #415A77;
-    color: #FFFFFF;
-    border: none;
+    background-color: #1E3A5F;
+    color: #00FF00;
+    border: 2px solid #00FF00;
     padding: 10px 20px;
     margin: 5px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 12px;
-    box-shadow: 0 0 10px rgba(0, 173, 181, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 .hire-menu button:hover {
-    background-color: #2E4A6A;
-    box-shadow: 0 0 15px rgba(0, 173, 181, 0.7);
+    background-color: #14375A;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
