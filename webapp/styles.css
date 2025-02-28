@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
-    padding: 20px;
+    padding: 20px 20px 100px 20px; /* Отступ снизу для кнопок */
 }
 .container {
     max-width: 600px;
@@ -20,24 +20,20 @@ h1, h2 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .message-box {
-    background-color: #e0ffe0; /* Зелёный фон по умолчанию */
+    background-color: #e0ffe0; /* Зелёный по умолчанию */
     color: #333;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
-    min-height: 20px; /* Фиксированная высота для стабильности */
+    min-height: 40px; /* Увеличенная высота для событий */
 }
 .message-box.error {
-    background-color: #ffe0e0; /* Красный фон для ошибок */
+    background-color: #ffe0e0; /* Красный для ошибок */
 }
-.event-container {
-    background-color: #fff3e0;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.message-box.event {
+    background-color: #fff3e0; /* Оранжевый для событий */
 }
-.event-container button {
+.message-box button {
     background-color: #ff9800;
     color: white;
     border: none;
@@ -46,10 +42,48 @@ h1, h2 {
     border-radius: 5px;
     cursor: pointer;
 }
-.event-container button:hover {
+.message-box button:hover {
     background-color: #e68900;
 }
-.actions button, .hire-menu button {
+.actions {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+.actions button {
+    background-color: #0088cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.actions button:hover {
+    background-color: #006699;
+}
+.hire-menu {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+.hire-menu button {
     background-color: #0088cc;
     color: white;
     border: none;
@@ -59,9 +93,6 @@ h1, h2 {
     cursor: pointer;
     font-size: 16px;
 }
-.actions button:hover, .hire-menu button:hover {
+.hire-menu button:hover {
     background-color: #006699;
-}
-.hire-menu {
-    margin-top: 20px;
 }

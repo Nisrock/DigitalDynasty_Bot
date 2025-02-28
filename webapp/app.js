@@ -10,7 +10,7 @@ if (!chat_id) {
 
 function sendCommand(command, role = null, action = null) {
     if (!chat_id) {
-        showNotification("Ошибка: Не удалось определить chat_id", true);
+        showMessage("Ошибка: Не удалось определить chat_id", true);
         return;
     }
     const body = { command: command, chat_id: chat_id };
@@ -31,16 +31,16 @@ function sendCommand(command, role = null, action = null) {
         if (data.success) {
             updateStatus();
             if (data.event) {
-                showEvent(data.event);
+                showMessage(data.event.message, false, data.event.options);
             } else {
-                showNotification(data.message || "Действие выполнено");
+                showMessage(data.message || "Действие выполнено");
             }
         } else {
-            showNotification(data.message || "Ошибка выполнения команды", true);
+            showMessage(data.message || "Ошибка выполнения команды", true);
         }
     })
     .catch(error => {
-        showNotification("Ошибка связи с сервером: " + error.message, true);
+        showMessage("Ошибка связи с сервером: " + error.message, true);
     });
 }
 
@@ -75,43 +75,31 @@ function updateStatus() {
             <p>⚙️ P: ${data.paei.P}% | 📋 A: ${data.paei.A}%</p>
             <p>💡 E: ${data.paei.E}% | 🤝 I: ${data.paei.I}%</p>
         `;
-        hideEvent();
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
     });
 }
 
-function showNotification(message, isError = false) {
+function showMessage(message, isError = false, options = null) {
     const messageBox = document.getElementById('message');
     if (!messageBox) return;
-    messageBox.textContent = message;
-    messageBox.className = 'message-box' + (isError ? ' error' : ''); // Устанавливаем класс
-}
-
-function showEvent(event) {
-    const eventContainer = document.getElementById('event');
-    const eventMessage = document.getElementById('event-message');
-    const eventOptions = document.getElementById('event-options');
-    if (!eventContainer || !eventMessage || !eventOptions) return;
     
-    eventMessage.textContent = event.message;
-    eventOptions.innerHTML = '';
-    event.options.forEach(option => {
-        const button = document.createElement('button');
-        button.textContent = option.text;
-        button.addEventListener('click', () => {
-            sendCommand('event', null, option.action);
+    messageBox.innerHTML = message; // Используем innerHTML для поддержки кнопок
+    messageBox.className = 'message-box' + (isError ? ' error' : options ? ' event' : '');
+    
+    if (options) {
+        const optionsDiv = document.createElement('div');
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option.text;
+            button.addEventListener('click', () => {
+                sendCommand('event', null, option.action);
+            });
+            optionsDiv.appendChild(button);
         });
-        eventOptions.appendChild(button);
-    });
-    
-    eventContainer.style.display = 'block';
-}
-
-function hideEvent() {
-    const eventContainer = document.getElementById('event');
-    if (eventContainer) eventContainer.style.display = 'none';
+        messageBox.appendChild(optionsDiv);
+    }
 }
 
 document.getElementById('hire').addEventListener('click', () => {
