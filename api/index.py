@@ -6,21 +6,35 @@ import os
 app = Flask(__name__, static_folder='../webapp', static_url_path='/webapp')
 game_instance = Game()
 
-# Загрузка данных игроков при старте
+# Загружаем данные игроков при старте
 game_instance.load_players()
 
+# Настройка CORS для Telegram Mini App
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
+
+# Отдаём главную страницу Mini App
 @app.route('/webapp')
 def serve_webapp():
-    return send_from_directory(app.static_folder, 'index.html')
+    response = send_from_directory(app.static_folder, 'index.html')
+    response.headers['Cache-Control'] = 'no-store'
+    response.headers['Connection'] = 'keep-alive'
+    return response
 
+# Обработка команд (нанять, проекты, улучшение)
 @app.route('/api/command', methods=['POST'])
 def handle_command():
-    data = request.json
-    command = data.get('command')
-    chat_id = data.get('chat_id')
-    role = data.get('role')
-    if not chat_id or not command:
+    data = request.get_json()
+    if not data or 'chat_id' not in data or 'command' not in data:
         return jsonify({"error": "Invalid request"}), 400
+    
+    command = data['command']
+    chat_id = data['chat_id']
+    role = data.get('role')
     
     player = game_instance.get_player(chat_id)
     if command == 'hire' and role in EMPLOYEE_ROLES:
@@ -35,13 +49,14 @@ def handle_command():
     game_instance.save_players()
     return jsonify({"success": success, "message": message})
 
+# Получение статуса игрока
 @app.route('/api/status', methods=['POST'])
 def get_status():
-    data = request.json
-    chat_id = data.get('chat_id')
-    if not chat_id:
+    data = request.get_json()
+    if not data or 'chat_id' not in data:
         return jsonify({"error": "Invalid request"}), 400
     
+    chat_id = data['chat_id']
     player = game_instance.get_player(chat_id)
     status = {
         "balance": player.balance,
@@ -54,6 +69,5 @@ def get_status():
     }
     return jsonify(status)
 
-# Vercel запускает Flask как Serverless-функцию
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
