@@ -5,7 +5,8 @@ const user = tg.initDataUnsafe.user;
 const chat_id = user ? user.id : null;
 
 if (!chat_id) {
-    document.getElementById('status').innerHTML = "Ошибка: Не удалось определить chat_id";
+    const statusElement = document.getElementById('status');
+    if (statusElement) statusElement.innerHTML = "Ошибка: Не удалось определить chat_id";
 }
 
 function sendCommand(command, role = null, action = null) {
@@ -47,10 +48,19 @@ function sendCommand(command, role = null, action = null) {
 function updateStatus() {
     const statusElement = document.getElementById('status');
     const balanceDisplay = document.getElementById('balance-display');
-    if (!chat_id || !statusElement || !balanceDisplay) {
+    const stage = document.getElementById('stage');
+    const reputation = document.getElementById('reputation');
+    const employees = document.getElementById('employees');
+    const projects = document.getElementById('projects');
+    const paeiP = document.getElementById('paei-p');
+    const paeiA = document.getElementById('paei-a');
+    const paeiEI = document.getElementById('paei-ei');
+
+    if (!chat_id || !statusElement || !balanceDisplay || !stage || !reputation || !employees || !projects || !paeiP || !paeiA || !paeiEI) {
         if (statusElement) statusElement.innerHTML = "Ошибка: Не удалось загрузить статус";
         return;
     }
+
     fetch('/api/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,15 +73,14 @@ function updateStatus() {
         return response.json();
     })
     .then(data => {
-        document.getElementById('stage').textContent = data.stage;
-        document.getElementById('balance').textContent = data.balance; // Для сетки
+        stage.textContent = data.stage;
+        reputation.textContent = `Репутация: ${data.reputation}`;
+        employees.textContent = `Сотрудники: ${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет сотрудников"})`;
+        projects.textContent = `Проекты: ${data.projects}`;
+        paeiP.textContent = `P: ${data.paei.P}%`;
+        paeiA.textContent = `A: ${data.paei.A}%`;
+        paeiEI.textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
         balanceDisplay.textContent = `⏰ ${new Date().toLocaleTimeString()} $${data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false })}`;
-        document.getElementById('reputation').textContent = data.reputation;
-        document.getElementById('employees').textContent = `${data.employees} (${Object.entries(data.employee_roles).filter(([_, count]) => count > 0).map(([role, count]) => `${role}: ${count}`).join(', ') || "Нет сотрудников"})`;
-        document.getElementById('projects').textContent = data.projects;
-        document.getElementById('paei-p').textContent = `${data.paei.P}%`;
-        document.getElementById('paei-a').textContent = `${data.paei.A}%`;
-        document.getElementById('paei-ei').textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
