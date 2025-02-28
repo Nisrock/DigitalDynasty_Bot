@@ -41,24 +41,28 @@ def handle_command():
             success, message = player.hire_employee(role)
             if success:
                 event = trigger_random_event(chat_id)
+                game_instance.save_players()  # Сохраняем изменения
                 if event:
                     return jsonify({"success": success, "message": message, "event": event})
         elif command == 'project':
             success, message = player.take_project()
             if success:
                 event = trigger_random_event(chat_id)
+                game_instance.save_players()  # Сохраняем изменения
                 if event:
                     return jsonify({"success": success, "message": message, "event": event})
         elif command == 'upgrade':
             success, message = player.upgrade_office()
             if success:
                 event = trigger_random_event(chat_id)
+                game_instance.save_players()  # Сохраняем изменения
                 if event:
                     return jsonify({"success": success, "message": message, "event": event})
         elif command == 'small_project':
             success, message = player.take_small_project()
             if success:
                 event = trigger_random_event(chat_id)
+                game_instance.save_players()  # Сохраняем изменения
                 if event:
                     return jsonify({"success": success, "message": message, "event": event})
         elif command == 'event' and action:
@@ -66,7 +70,7 @@ def handle_command():
         else:
             return jsonify({"error": f"Unknown command: {command}"}), 400
         
-        # game_instance.save_players() # Пока в памяти
+        game_instance.save_players()  # Сохраняем изменения даже при неудаче
         return jsonify({"success": success, "message": message})
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
@@ -122,20 +126,24 @@ def handle_event(chat_id, action):
     if action == 'fix_bug':
         if player.balance >= FIX_BUG_COST:
             player.balance -= FIX_BUG_COST
+            game_instance.save_players()
             return True, f"💰 Баг исправлен! Баланс: {player.balance}"
         return False, "💸 Недостаточно монет для исправления!"
     elif action == 'ignore_bug':
         player.reputation -= IGNORE_BUG_REP_PENALTY
+        game_instance.save_players()
         return True, f"❌ Клиент ушёл недовольным. Репутация: {player.reputation}"
     elif action == 'bonus':
         if player.balance >= BONUS_COST:
             player.balance -= BONUS_COST
             player.paei["I"] += 5
+            game_instance.save_players()
             return True, f"💸 Сотрудник остался! Баланс: {player.balance}"
         return False, "💸 Недостаточно монет для бонуса!"
     elif action == 'let_go':
         if player.employees > 1:
             player.employees -= 1
+            game_instance.save_players()
             return True, f"🚪 Сотрудник ушёл. Сотрудники: {player.employees}"
         return False, "👥 Нельзя уволить последнего сотрудника!"
     return False, "Неизвестное действие"
