@@ -46,7 +46,8 @@ function sendCommand(command, role = null, action = null) {
 
 function updateStatus() {
     const statusElement = document.getElementById('status');
-    if (!chat_id || !statusElement) {
+    const balanceDisplay = document.getElementById('balance-display');
+    if (!chat_id || !statusElement || !balanceDisplay) {
         if (statusElement) statusElement.innerHTML = "Ошибка: Не удалось загрузить статус";
         return;
     }
@@ -70,6 +71,7 @@ function updateStatus() {
         document.getElementById('paei-p').textContent = `${data.paei.P}%`;
         document.getElementById('paei-a').textContent = `${data.paei.A}%`;
         document.getElementById('paei-ei').textContent = `E: ${data.paei.E}% | I: ${data.paei.I}%`;
+        balanceDisplay.textContent = `⏰ ${new Date().toLocaleTimeString()} $` + data.balance.toLocaleString('en-US', { minimumIntegerDigits: 5, useGrouping: false });
     })
     .catch(error => {
         statusElement.innerHTML = "Ошибка загрузки статуса: " + error.message;
