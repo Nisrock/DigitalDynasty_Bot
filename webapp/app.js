@@ -8,7 +8,7 @@ if (!chat_id) {
     document.getElementById('status').innerHTML = "Ошибка: Не удалось определить chat_id";
 }
 
-function sendCommand(command, role = null) {  // Убрали tech, так как пока не добавляем технологии
+function sendCommand(command, role = null) {
     if (chat_id) {
         const body = { command: command, chat_id: chat_id };
         if (role) body.role = role;
@@ -17,11 +17,16 @@ function sendCommand(command, role = null) {  // Убрали tech, так ка�
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                updateStatus();  // Автоматически обновляем статус после успешного действия
-                alert(data.message);  // Оставляем уведомление для пользователя
+                updateStatus();
+                alert(data.message);
             } else {
                 alert(data.message || "Ошибка выполнения команды");
             }
@@ -39,7 +44,12 @@ function updateStatus() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: chat_id })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const rolesText = Object.entries(data.employee_roles)
                 .map(([role, count]) => count > 0 ? `${role}: ${count}` : '')
@@ -61,7 +71,6 @@ function updateStatus() {
     }
 }
 
-// Обработчики кнопок
 document.getElementById('hire').addEventListener('click', () => {
     document.getElementById('hire-menu').style.display = 'block';
     document.querySelector('.actions').style.display = 'none';
@@ -79,9 +88,7 @@ document.querySelectorAll('.role-btn').forEach(button => {
     });
 });
 
-// Инициализация статуса
 updateStatus();
 
-// Главная кнопка теперь необязательна для обновления, но оставим её для удобства
 tg.MainButton.setText('Играть в DigitalDynasty').show();
 tg.onEvent('mainButtonClicked', () => updateStatus());
